@@ -5,15 +5,9 @@
 
 
 import pandas as pd
-import argparse
 #for error testing:
 import re
 import sys
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument('-filename', type = str)
-args = parser.parse_args()
 
 
 #### Question 1 ####
@@ -39,7 +33,6 @@ def count_kmers_observed(read, k):
        else: continue
           #if the kmer is already in the dictionary, continue to the next i
    return counts
-#print(len(count_kmers_observed(read, k)))
 
 
 # function to count possible kmers
@@ -53,7 +46,6 @@ def count_kmers_possible(read, k):
    num_kmers = min(num_kmers1,num_kmers2)
      #this takes the smallest value between these 2 variables
    return num_kmers
-#print(len(count_kmers_observed(read,k)))
 
 
 
@@ -104,7 +96,7 @@ def calculate_LC(read):
    '''
    Takes a sequence read, outputs the linguistic complexity.
    '''
-   #run the df function to create the df, in order to get the sums
+   #run the df function to create the df, in order to get the sums to calculate LC
    df = make_df(read)
    #set x and y equal to the total of observed and possible kmers
    x = int(df.at['Total', 'observed kmers'])
@@ -112,7 +104,6 @@ def calculate_LC(read):
    #calculate LC as x/y
    LC = (x/y)
    return(LC)
-#print(calculate_LC(read))
  
 
 
@@ -123,9 +114,8 @@ def main():
    Takes no arguments. It opens a file of sequences, loops through and generates output files stating
    linguistic complexity and a dataframe of the observed and expected kmers for each sequence in the file.
    '''
-   #fn = open(args.filename)
-     #open the file containing sequences
    fn = open("sequences.txt", "r")
+     #open the file containing sequences
    for i, sequence in enumerate(fn):
        #enumerate() allows you to iterate, and it returns both the index (i) and value (sequence) in the current iteration
        #so you iterate through each sequence in the file
