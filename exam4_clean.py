@@ -28,7 +28,7 @@ def count_kmers_observed(read, k):
           #for each successive kmer, subset the read to that kmer based on the size of k
           #this is like a sliding window because you start at 1 and go to k, then start at 2 and go to k, etc.
        if kmer not in counts:
-          #if the kmer is not already in the dictionary, assign it a value of 0 and add the kmer as the key
+          #if the kmer is not already in the dictionary, assign it an arbitrary value of 0 and add the kmer as the key
           counts[kmer] = 0
        else: continue
           #if the kmer is already in the dictionary, continue to the next i
@@ -45,6 +45,7 @@ def count_kmers_possible(read, k):
      #double asterick means to the power of
    num_kmers = min(num_kmers1,num_kmers2)
      #this takes the smallest value between these 2 variables
+     #this formula came from the exam instructions pdf
    return num_kmers
 
 
@@ -57,21 +58,22 @@ def make_df(read):
    for each kmer length.
    '''
    
-   #first column
+   #first column- k
    k_values = []
      #make an empty list to append to
    for i in range(1,len(read)+1):
       #loop through the length of the read
       #since len() doesn't include the last number in the range, add 1
      k_values.append(i)
+       #this now has all values of k possible given the read length
    
-   #second column
+   #second column- observed number of kmers
    observed_kmers = []
    #loop through each value of k and get the observed kmers from the count_kmers_observed function
    for i in k_values:
      observed_kmers.append(len(count_kmers_observed(read, i)))
    
-   #thid column
+   #thid column- possible number of kmers
    possible_kmers = []
    #loop through each value of k and get the possible kmers from the count_kmers_possible function
    for i in k_values:
@@ -121,6 +123,7 @@ def main():
        #so you iterate through each sequence in the file
        
      #throw an error if the read has other letters aside from ACTG
+       #don't need to have an error test for k size, because k isn't given as an argument, it's calculated based on the size of the read in the file
      if not re.match("^[c('A','C','T','G')]*$", sequence):
         print("Error: only letters A,C,T,G allowed")
         sys.exit()
@@ -128,7 +131,7 @@ def main():
        #open a file to write the LC to
        #%i means to substitute with the current value of the iteration into the filename
      LC = str(calculate_LC(sequence.rstrip()))
-       #write() requires a string argument, can't have float
+       #.write() requires a string argument, can't have float
        #use rstrip to strip any whitespace to the right of the sequence
      file_LC.write(f"Sequence: {sequence}\n")
        #the f indicates that whatever is in the {} is a variable and not to be taken literally
